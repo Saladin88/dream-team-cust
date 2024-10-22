@@ -1,17 +1,18 @@
 <script>
+import axiosClient from '@/services/axiosClient.js'
 import axios from 'axios';
 
 export default {
   data() {
     return {
-      selectedFile: null,
+      selectedFile: '',
       message: '',
       messageType: '',
     };
   },
   methods: {
-    handleFileUpload(event) {
-      this.selectedFile = event.target.files[0];
+    handleFileUpload() {
+      this.selectedFile = this.$refs.selectedFile.files[0];
     },
     async uploadFile() {
       if (!this.selectedFile) {
@@ -31,7 +32,7 @@ export default {
       formData.append('file', this.selectedFile);
 
       try {
-        const response = await axios.post('/upload', formData, {
+        await axiosClient.post('/developers/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -47,11 +48,11 @@ export default {
 };
 </script>
 
-<template>
+<template >
   <h1 class="m-3 text-center">{{ $t('uploadPage.pageTitle') }}</h1>
   <div class="container col-12 col-md-10 bg-light p-3">
-    <form class="p-3 fs-5 text bg-light rounded-2" @submit.prevent="uploadFile">
-      <input type="file" @change="handleFileUpload" accept=".csv" required class="form-control mb-3"/>
+    <form @submit.prevent="uploadFile" enctype="multipart/form-data" class="p-3 fs-5 text bg-light rounded-2">
+      <input type="file" ref="selectedFile" @change="handleFileUpload" accept=".csv" required class="form-control mb-3"/>
       <button class="btn btn-primary fs-5" type="submit">{{ $t('uploadPage.button') }}</button>
     </form>
 

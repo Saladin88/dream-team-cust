@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/developers")
 @RestController
-@CrossOrigin("*")
 public class DeveloperController {
     private final DeveloperService developerService;
 
